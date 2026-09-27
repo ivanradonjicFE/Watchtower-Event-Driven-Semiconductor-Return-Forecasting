@@ -1,0 +1,8 @@
+.venv/
+.cache/
+__pycache__/
+.DS_Store
+.env
+Open_AI_API_Key.txt
+*.db
+out/

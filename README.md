@@ -1,4 +1,8 @@
-# Semiconductor Deep Research Agent System
+# Watchtower: Semiconductor Weather Risk Agents
+
+![Typhoon Bavi-26 and the chip sites in its impact zone](docs/images/event_map.png)
+
+**[Sample report (PDF)](docs/sample_report.pdf)** | **[Final report](docs/Final_Report.pdf)** | **[Hackathon prompt](docs/Hackathon_Prompt.pdf)**
 
 Built for the Stevens Business + AI Hackathon (Chubb problem statement).
 
@@ -10,17 +14,28 @@ Data sources are free and need no keys. The reasoning agents use the OpenAI API;
 
 ## Quick start
 
+**Requirements:** Python 3.10+ and an OpenAI API key. Without a key, the agents fall back to rule-based logic.
+
 ```bash
-git clone <this repo> && cd chubb-hackathon
+git clone https://github.com/ivanradonjicFE/Watchtower-Semiconductor-Weather-Risk-Agents.git
+cd Watchtower-Semiconductor-Weather-Risk-Agents
 python3 -m venv .venv
 ./.venv/bin/pip install -r requirements.txt
-echo "OPENAI_API_KEY=sk-..." > .env        # never commit this file
-
-./.venv/bin/python agent_system.py                    # always-on: a cycle every 5 min until Ctrl+C
-./.venv/bin/python agent_system.py --once             # one cycle, then exit
-./.venv/bin/python agent_system.py --once --days 90   # demo: include hazards from the last 90 days
-./.venv/bin/python agent_system.py --reset            # forget all state and start fresh
+echo "OPENAI_API_KEY=sk-..." > .env        # your key; never commit this file
 ```
+
+**Run it:**
+
+```bash
+./.venv/bin/python agent_system.py --once --days 90   # demo: one cycle over the last 90 days, then opens the PDF report
+./.venv/bin/python agent_system.py                    # always-on: a cycle every 5 min until Ctrl+C
+./.venv/bin/python agent_system.py --reset            # forget all state and start fresh
+./.venv/bin/python agent_system.py --once --no-open   # don't open the PDF automatically
+```
+
+**What to expect:** a first cycle takes about 3–5 minutes and roughly 15–25 AI calls, and prints each agent's steps in the terminal. With `--once`, it ends by writing `out/report-<time>.pdf` and opening it (macOS). Later cycles are quick unless something new or escalating appears. In live mode (no `--days`), it only reports storms from the last 10 days, so it may correctly find nothing near chip sites.
+
+**Windows:** use `.venv\Scripts\python` instead of `./.venv/bin/python`.
 
 The API key is read from the `OPENAI_API_KEY` environment variable, from `.env`, or from `Open_AI_API_Key.txt`, in that order.
 
@@ -105,6 +120,11 @@ Reports follow the d-dev branch SITREP layout: short, table-driven, quantitative
 | Market so far / Actions / How we scored this | Ticker moves, 3–4 bolded actions, scoring and agent trail |
 
 **Charts** (matplotlib, embedded in every report section):
+
+![WDI severity and vulnerability breakdown](docs/images/wdi_breakdown.png)
+
+![TSMC price replayed on the closest precedent's path](docs/images/stock_projection.png)
+
 - **WDI pies:** two donuts showing how intensity, radius and duration make up the severity total, and how concentration, buffers and utility dependency make up the vulnerability total (weighted contributions; each donut sums to its total).
 - **Map:** world view of all monitored chip sites and the storm or tsunami position, plus a zoom on the impact zone with the impact radius and the sites inside it.
 - **Stock to watch:** the last 60 trading days of the stock the analyst rates most negative (one with precedent price history; otherwise the SOX index), then today's price carried forward 20 trading days along the closest precedent's actual percent path. The shaded band is the range across all precedents. These are raw price paths, not relative to the S&P 500.
