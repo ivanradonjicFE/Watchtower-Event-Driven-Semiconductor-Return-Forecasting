@@ -1,4 +1,4 @@
-# Watchtower: Semiconductor Weather Risk Agents
+# Watchtower – Event-Driven Semiconductor Return Forecasting
 
 ![Typhoon Bavi-26 and the chip sites in its impact zone](docs/images/event_map.png)
 
@@ -17,8 +17,8 @@ Data sources are free and need no keys. The reasoning agents use the OpenAI API;
 **Requirements:** Python 3.10+ and an OpenAI API key. Without a key, the agents fall back to rule-based logic.
 
 ```bash
-git clone https://github.com/ivanradonjicFE/Watchtower-Semiconductor-Weather-Risk-Agents.git
-cd Watchtower-Semiconductor-Weather-Risk-Agents
+git clone https://github.com/ivanradonjicFE/Watchtower-Event-Driven-Semiconductor-Return-Forecasting.git
+cd Watchtower-Event-Driven-Semiconductor-Return-Forecasting
 python3 -m venv .venv
 ./.venv/bin/pip install -r requirements.txt
 echo "OPENAI_API_KEY=sk-..." > .env        # your key; never commit this file
